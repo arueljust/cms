@@ -26,6 +26,12 @@ $(document).ready(function () {
             { data: "kelas.kelas", name: "kelas.kelas" },
             { data: "jenis_kelamin", name: "jenis_kelamin" },
             {
+                data: "cek",
+                name: "cek",
+                orderable: false,
+                searchable: false,
+            },
+            {
                 data: "options",
                 name: "options",
                 orderable: false,
@@ -234,6 +240,61 @@ $(document).on("click", ".delete", function () {
                 },
                 data: {
                     id: id,
+                    multi: null,
+                },
+                success: function (params) {
+                    Swal.fire({
+                        type: "success",
+                        icon: "success",
+                        title: "Data dihapus !",
+                        showConfirmButton: false,
+                        timer: 3000,
+                    });
+                    $("#siswa-table").DataTable().ajax.reload();
+                },
+            });
+        }
+    });
+});
+
+// multiple select function
+let dataCheck = [];
+$(document).on("change", ".ceks", function () {
+    let id = $(this).attr("id");
+    if ($(this).is(":checked")) {
+        dataCheck.push(id);
+        console.log(dataCheck);
+    } else {
+        let index = dataCheck.indexOf(id);
+        if (index > -1) {
+            dataCheck.splice(index, 1);
+        }
+        console.log(dataCheck);
+    }
+});
+
+// multiple delete
+$(document).on("click", "#delete", function () {
+    Swal.fire({
+        title: "Apakah Kamu Yakin?",
+        text: "Ingin menghapus data ini!",
+        icon: "warning",
+        showCancelButton: true,
+        cancelButtonText: "Tidak",
+        confirmButtonText: "Hapus!",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: "/admin/siswa/delete",
+                type: "post",
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                data: {
+                    data: dataCheck,
+                    multi: 1,
                 },
                 success: function (params) {
                     Swal.fire({

@@ -19,8 +19,12 @@
                                     <button type="button" id="tambah" class="btn btn-sm btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                                         <strong>Tambah Data</strong>
                                     </button>
+                                    <button type="button" id="delete" class="btn btn-sm btn-outline-danger float-end mr-1">
+                                        <strong>Hapus Data</strong>
+                                    </button>
                                 </h4>
                             </div>
+
                             <div class="card-body">
                                 <table class="table table-bordered table-striped shadow" id="siswa-table">
                                     <thead>
@@ -33,6 +37,7 @@
                                             <th>Nama Ortu</th>
                                             <th>Kelas/Usia</th>
                                             <th>L/P</th>
+                                            <th></th>
                                             <th>Options</th>
                                         </tr>
                                     </thead>

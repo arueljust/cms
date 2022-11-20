@@ -30,7 +30,11 @@ class SiswaController extends Controller
                     $button .= '   <button type="button" id=' . $query->id . ' class="delete btn btn-outline-danger btn-sm">Hapus</button>';
                     return $button;
                 })
-                ->rawColumns(['options'])
+                ->addColumn('cek', function ($query) {
+                    $cek = "<input type='checkbox' class='ceks' id='" . $query->id . "'>";
+                    return $cek;
+                })
+                ->rawColumns(['options', 'cek'])
                 ->make(true);
         }
         return view('admin.siswa.index', compact('data'));
@@ -82,7 +86,7 @@ class SiswaController extends Controller
         }
 
         return response()->json([
-            'status'=>400,
+            'status' => 400,
             'data' => $data,
             'text' => $data->errors()->all()
         ]);
@@ -144,10 +148,10 @@ class SiswaController extends Controller
         $data = Siswa::find($id);
         $save = $data->update($datas);
 
-        if($save){
-            return response()->json(['text'=>'Update berhasil'],200);
-        }else{
-            return response()->json(['text'=>'Update gagal'],422);
+        if ($save) {
+            return response()->json(['text' => 'Update berhasil'], 200);
+        } else {
+            return response()->json(['text' => 'Update gagal'], 422);
         }
     }
 
@@ -160,9 +164,21 @@ class SiswaController extends Controller
      */
     public function destroy(Request $request)
     {
-        $id = $request->id;
-        $data = Siswa::find($id);
-        $data->delete();
-        return response()->json(['text' => 'berhasil hapus data'],200);
+        if ($request->multi != null) {
+
+            $data = $request->data;
+
+            foreach ($data as $key) {
+                $datas = Siswa::find($key);
+                $datas->delete();
+            }
+            return response()->json(['text' => 'berhasil hapus data'], 200);
+        } else {
+
+            $id = $request->id;
+            $data = Siswa::find($id);
+            $data->delete();
+            return response()->json(['text' => 'berhasil hapus data'], 200);
+        }
     }
 }
