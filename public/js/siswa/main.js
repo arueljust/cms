@@ -43,8 +43,16 @@ $(document).ready(function () {
 
 $("#tambah").on("click", function () {
     $("#staticBackdropLabel").html(
-        '<h5 class="modal-title" id="staticBackdropLabel"><strong class="text-dark">Tambah Data</strong> <strong class="text-warning">Siswa</strong></h5>'
-    );
+        '<h5 class="modal-title" id="staticBackdropLabel"><strong class="text-dark">Tambah Data</strong> <strong class="text-warning">Siswa</strong></h5>');
+    $("#nama").val(null);
+    $("#alamat").val(null);
+    $("#ttl").val(null);
+    $("#no_telp").val(null);
+    $("#nama_ortu").val(null);
+    $("#kelas_id").val(null);
+    $("#jenis_kelamin").val(null);
+    $("#foto").val(null);
+    $("#save").text("Simpan");
 });
 
 $("#save").on("click", function () {
@@ -90,7 +98,6 @@ $(document).on("click", ".edit", function () {
     });
     // ketika data tidak jadi di edit dan menekan tombol batal maka akan menjalankan function ini
     $("#close").on("click", function () {
-        $("#siswa-table").DataTable().ajax.reload();
         $("#save").text("Simpan");
         $("#nama").val(null);
         $("#alamat").val(null);
@@ -177,7 +184,6 @@ function edit() {
             kelas_id: $("#kelas_id").val(),
             jenis_kelamin: $("#jenis_kelamin").val(),
             foto: $("#foto").val(),
-            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
         success: function () {
             Swal.fire({

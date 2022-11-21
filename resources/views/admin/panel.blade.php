@@ -15,7 +15,8 @@
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('admin-lte/plugins/fontawesome-free/css/all.min.css' )}}">
-
+    <!-- yajra button -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.3/css/buttons.bootstrap5.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="{{asset('admin-lte/https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css')}}">
 
@@ -115,6 +116,10 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- sweetAlret2 -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- yajra button -->
+    <script src="https://cdn.datatables.net/buttons/2.3.3/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.3/js/buttons.bootstrap5.min.js"></script>
+    <script src="/vendor/datatables/buttons.server-side.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function() {

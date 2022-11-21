@@ -63,7 +63,7 @@
             </div>
             <div class="modal-body">
 
-                <form action="{{ url('admin/siswa') }}" method="POST" enctype="multipart/form-data">
+                <form method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <div class="col-md-6 mb-3">
