@@ -38,7 +38,11 @@ $(document).ready(function () {
                 searchable: false,
             },
         ],
-    });
+    }).on('draw',function(){
+        $('input[name="checkbox"]').each(function(){this.checked=false;});
+        $('input[name="main_checkbox"]').prop('checked',false);
+        $('#delete').addClass('d-none');
+    })
 });
 
 $("#tambah").on("click", function () {
