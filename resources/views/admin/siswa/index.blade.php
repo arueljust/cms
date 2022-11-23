@@ -19,7 +19,7 @@
                                     <button type="button" id="tambah" class="btn btn-sm btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                                         <strong>Tambah Data</strong>
                                     </button>
-                                    <button type="button" id="delete" class="btn btn-sm btn-outline-danger float-end mr-1">
+                                    <button type="button" id="delete" class="btn btn-sm btn-outline-danger float-end mr-1 d-none">
                                         <strong>Hapus Data</strong>
                                     </button>
                                 </h4>
@@ -29,6 +29,7 @@
                                 <table class="table table-bordered table-striped shadow" id="siswa-table">
                                     <thead>
                                         <tr>
+                                            <th><input type="checkbox" name="main_checkbox"><label></label></th>
                                             <th>No</th>
                                             <!-- <th>Foto</th> -->
                                             <th>Nama</th>
@@ -37,7 +38,6 @@
                                             <th>Nama Ortu</th>
                                             <th>Kelas/Usia</th>
                                             <th>L/P</th>
-                                            <th></th>
                                             <th>Options</th>
                                         </tr>
                                     </thead>
@@ -70,27 +70,27 @@
                             <label>Nama Siswa :</label>
                             <input type="text" id="nama" name="nama" class="form-control shadow" placeholder="Nama Lengkap Siswa">
                             <input type="hidden" id="id" name="id">
-                            <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-nama"></div>
+
                         </div>
                         <div class="col-md-6 mb-3">
                             <label>Alamat :</label>
                             <input type="text" id="alamat" name="alamat" class="form-control shadow" placeholder="Alamat">
-                            <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-alamat"></div>
+
                         </div>
                         <div class="col-md-6 mb-3">
                             <label>Tempat / Tanggal /Lahir :</label>
                             <input type="text" id="ttl" name="ttl" class="form-control shadow" placeholder="Tempat-Tanggal-Lahir">
-                            <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-ttl"></div>
+
                         </div>
                         <div class="col-md-6 mb-3">
                             <label>No Telp :</label>
                             <input type="text" id="no_telp" name="no_telp" class="form-control shadow" placeholder="Nomer telpon">
-                            <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-no_telp"></div>
+
                         </div>
                         <div class="col-md-6 mb-3">
                             <label>Nama Ortu :</label>
                             <input type="text" id="nama_ortu" name="nama_ortu" class="form-control shadow" placeholder="Nama Orang Tua">
-                            <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-nama_ortu"></div>
+
                         </div>
                         <div class="col-md-6 mb-3">
                             <label><strong>Kelas / Usia :</strong></label>
@@ -100,7 +100,7 @@
                                 <option value="{{ $d->id }}">{{ $d->kelas }}</option>
                                 @endforeach
                             </select>
-                            <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-kelas_id"></div>
+
                         </div>
                         <div class="col-md-6 mb-3">
                             <label><strong>Jenis Kelamin :</strong></label>
@@ -109,12 +109,12 @@
                                 <option value="L"> Laki-Laki </option>
                                 <option value="P"> Perempuan </option>
                             </select>
-                            <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-jenis_kelamin"></div>
+
                         </div>
                         <div class="col-md-6 mb-3">
                             <label>Upload Foto :</label>
                             <input type="file" id="foto" name="foto" class="form-control shadow" />
-                            <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-foto"></div>
+
                         </div>
                     </div>
                 </form>

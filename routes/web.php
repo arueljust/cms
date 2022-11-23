@@ -64,13 +64,12 @@ Route::prefix('admin')->middleware('auth', 'admin')->group(function () {
 
 
     // guru
-    Route::get('guru', [GuruController::class, 'index']);
+    Route::get('guru', [GuruController::class, 'index'])->name('indexGuru');
     Route::get('guru/show/{id}', [GuruController::class, 'show']);
-    Route::get('guru/create', [GuruController::class, 'create']);
-    Route::post('guru', [GuruController::class, 'store']);
-    Route::get('guru/edit/{id}', [GuruController::class, 'edit']);
-    Route::put('guru/{id}', [GuruController::class, 'update']);
-    Route::get('guru/delete/{id}', [GuruController::class, 'destroy']);
+    Route::post('guru/store', [GuruController::class, 'store']);
+    Route::post('guru/edit', [GuruController::class, 'edit']);
+    Route::post('guru/update', [GuruController::class, 'update']);
+    Route::post('guru/delete', [GuruController::class, 'destroy']);
 
     // jadwal
     Route::get('jadwal', [JadwalController::class, 'index']);

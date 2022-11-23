@@ -1,6 +1,6 @@
-// yajra datatbles
+// yajra datatles
 $(document).ready(function () {
-    $("#siswa-table").DataTable({
+    $("#guru-table").DataTable({
         responsive: true,
         lengthChange: false,
         autoWidth: false,
@@ -14,6 +14,7 @@ $(document).ready(function () {
             {
                 data: "cek",
                 name: "cek",
+                width: "10px",
                 orderable: false,
                 searchable: false,
             },
@@ -24,13 +25,11 @@ $(document).ready(function () {
                 orderable: false,
                 searchable: false,
             },
-            // { data: "foto", name: "foto" },
             { data: "nama", name: "nama" },
-            { data: "ttl", name: "ttl" },
+            { data: "alamat", name: "alamat" },
             { data: "no_telp", name: "no_telp" },
-            { data: "nama_ortu", name: "nama_ortu" },
-            { data: "kelas.kelas", name: "kelas.kelas" },
             { data: "jenis_kelamin", name: "jenis_kelamin" },
+
             {
                 data: "options",
                 name: "options",
@@ -38,20 +37,24 @@ $(document).ready(function () {
                 searchable: false,
             },
         ],
-    });
+    }).on('draw',function(){
+        $('input[name="checkbox"]').each(function(){this.checked=false;});
+        $('input[name="main_checkbox"]').prop('checked',false);
+        $('#deleteGuru').addClass('d-none');
+    })
 });
 
-$("#tambah").on("click", function () {
-    $("#staticBackdropLabel").html(
-        '<h5 class="modal-title" id="staticBackdropLabel"><strong class="text-dark">Tambah Data</strong> <strong class="text-warning">Siswa</strong></h5>');
+$("#addGuru").on("click", function () {
+    $("#staticBackdropLabelGuru").html(
+        '<h5 class="modal-title" id="staticBackdropLabel"><strong class="text-dark">Tambah Data</strong> <strong class="text-warning">Guru</strong></h5>'
+    );
     $("#nama").val(null);
     $("#alamat").val(null);
     $("#ttl").val(null);
     $("#no_telp").val(null);
-    $("#nama_ortu").val(null);
-    $("#kelas_id").val(null);
     $("#jenis_kelamin").val(null);
     $("#foto").val(null);
+    $("#sertifikat").val(null);
     $("#save").text("Simpan");
 });
 
@@ -63,20 +66,20 @@ $("#save").on("click", function () {
     }
 });
 
-// panggil function edit berdasarkan id untuk menedit data
+// // panggil function edit berdasarkan id untuk menedit data
 $(document).on("click", ".edit", function () {
     let id = $(this).attr("id");
     // buka modal nya untuk edit data
-    $("#tambah").click();
+    $("#addGuru").click();
     // ubah button simpan jadi "update"
     $("#save").text("Update");
     // ubah text-header jadi edit
-    $("#staticBackdropLabel").html(
-        '<h5 class="modal-title" id="staticBackdropLabel"><strong class="text-dark">Edit Data</strong> <strong class="text-warning">Siswa</strong></h5>'
+    $("#staticBackdropLabelGuru").html(
+        '<h5 class="modal-title" id="staticBackdropLabel"><strong class="text-dark">Edit Data</strong> <strong class="text-warning">Guru</strong></h5>'
     );
     // data
     $.ajax({
-        url: "/admin/siswa/edit",
+        url: "/admin/guru/edit",
         type: "post",
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
@@ -90,10 +93,9 @@ $(document).on("click", ".edit", function () {
             $("#alamat").val(res.data.alamat);
             $("#ttl").val(res.data.ttl);
             $("#no_telp").val(res.data.no_telp);
-            $("#nama_ortu").val(res.data.nama_ortu);
-            $("#kelas_id").val(res.data.kelas_id);
             $("#jenis_kelamin").val(res.data.jenis_kelamin);
             $("#foto").val(res.data.foto);
+            $("#sertifikat").val(res.data.sertifikat);
         },
     });
     // ketika data tidak jadi di edit dan menekan tombol batal maka akan menjalankan function ini
@@ -103,16 +105,16 @@ $(document).on("click", ".edit", function () {
         $("#alamat").val(null);
         $("#ttl").val(null);
         $("#no_telp").val(null);
-        $("#nama_ortu").val(null);
-        $("#kelas_id").val(null);
         $("#jenis_kelamin").val(null);
         $("#foto").val(null);
+        $("#sertifikat").val(null);
     });
 });
+
 // function tambah data
 function add() {
     $.ajax({
-        url: "/admin/siswa/store",
+        url: "/admin/guru/store",
         type: "post",
         dataType: "json",
         headers: {
@@ -123,10 +125,9 @@ function add() {
             alamat: $("#alamat").val(),
             ttl: $("#ttl").val(),
             no_telp: $("#no_telp").val(),
-            nama_ortu: $("#nama_ortu").val(),
-            kelas_id: $("#kelas_id").val(),
             jenis_kelamin: $("#jenis_kelamin").val(),
             foto: $("#foto").val(),
+            sertifikat: $("#sertifikat").val(),
         },
         success: function (data) {
             Swal.fire({
@@ -136,17 +137,15 @@ function add() {
                 showConfirmButton: false,
                 timer: 3000,
             });
-
             $("#close").click();
-            $("#siswa-table").DataTable().ajax.reload();
+            $("#guru-table").DataTable().ajax.reload();
             $("#nama").val(null);
             $("#alamat").val(null);
             $("#ttl").val(null);
             $("#no_telp").val(null);
-            $("#nama_ortu").val(null);
-            $("#kelas_id").val(null);
             $("#jenis_kelamin").val(null);
             $("#foto").val(null);
+            $("#sertifikat").val(null);
         },
         error: function (data) {
             alert(data.responseJSON.message);
@@ -158,17 +157,16 @@ function add() {
         $("#alamat").val(null);
         $("#ttl").val(null);
         $("#no_telp").val(null);
-        $("#nama_ortu").val(null);
-        $("#kelas_id").val(null);
         $("#jenis_kelamin").val(null);
         $("#foto").val(null);
+        $("#sertifikat").val(null);
     });
 }
 
-// function update data
+// // function update data
 function edit() {
     $.ajax({
-        url: "/admin/siswa/update",
+        url: "/admin/guru/update",
         type: "post",
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
@@ -179,10 +177,9 @@ function edit() {
             alamat: $("#alamat").val(),
             ttl: $("#ttl").val(),
             no_telp: $("#no_telp").val(),
-            nama_ortu: $("#nama_ortu").val(),
-            kelas_id: $("#kelas_id").val(),
             jenis_kelamin: $("#jenis_kelamin").val(),
             foto: $("#foto").val(),
+            sertifikat: $("#sertifikat").val(),
         },
         success: function () {
             Swal.fire({
@@ -194,30 +191,27 @@ function edit() {
             });
             // jika sukses kosongkan modal form
             $("#close").click();
-            $("#siswa-table").DataTable().ajax.reload();
+            $("#guru-table").DataTable().ajax.reload();
             $("#nama").val(null);
             $("#alamat").val(null);
             $("#ttl").val(null);
             $("#no_telp").val(null);
-            $("#nama_ortu").val(null);
-            $("#kelas_id").val(null);
             $("#jenis_kelamin").val(null);
             $("#foto").val(null);
+            $("#sertifikat").val(null);
             $("#save").text("Simpan");
         },
         error: function (xhr) {
             alert(xhr.responseJSON.text);
             // jika gagal kosongkan modal form
             $("#close").click();
-            $("#siswa-table").DataTable().ajax.reload();
             $("#nama").val(null);
             $("#alamat").val(null);
             $("#ttl").val(null);
             $("#no_telp").val(null);
-            $("#nama_ortu").val(null);
-            $("#kelas_id").val(null);
             $("#jenis_kelamin").val(null);
             $("#foto").val(null);
+            $("#sertifikat").val(null);
         },
     });
 }
@@ -236,7 +230,7 @@ $(document).on("click", ".delete", function () {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: "/admin/siswa/delete",
+                url: "/admin/guru/delete",
                 type: "post",
                 headers: {
                     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
@@ -255,12 +249,15 @@ $(document).on("click", ".delete", function () {
                         showConfirmButton: false,
                         timer: 3000,
                     });
-                    $("#siswa-table").DataTable().ajax.reload();
+                    $("#guru-table").DataTable().ajax.reload();
+                    // document.getElementById("deleteGuru").style.visibility =
+                    //     "hidden";
                 },
             });
         }
     });
 });
+
 
 // function select checkbox
 $(document).on("click", 'input[name="main_checkbox"]', function () {
@@ -290,16 +287,15 @@ $(document).on("change", 'input[name="checkbox"]', function () {
 // tampilka multiple delete button apabila checkbox terselect
 function multipleDelete() {
     if ($('input[name="checkbox"]:checked').length > 0) {
-        $("#delete").text("Hapus ("+$('input[name="checkbox"]:checked').length +") Data")
+        $("#deleteGuru").text("Hapus ("+$('input[name="checkbox"]:checked').length +") Data")
             .removeClass("d-none");
     } else {
-        $("#delete").addClass("d-none");
+        $("#deleteGuru").addClass("d-none");
     }
 }
 
-
 // function multi delete
-$(document).on('click','#delete',function(){
+$(document).on('click','#deleteGuru',function(){
     let checkedAll=[];
       $('input[name="checkbox"]:checked').each(function(){
         checkedAll.push($(this).attr('id'));
@@ -314,7 +310,7 @@ $(document).on('click','#delete',function(){
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: "/admin/siswa/delete",
+                        url: "/admin/guru/delete",
                         type: "post",
                         headers: {
                             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
@@ -333,7 +329,7 @@ $(document).on('click','#delete',function(){
                                 showConfirmButton: false,
                                 timer: 3000,
                             });
-                            $("#siswa-table").DataTable().ajax.reload();
+                            $("#guru-table").DataTable().ajax.reload();
                         },
                     });
                 }

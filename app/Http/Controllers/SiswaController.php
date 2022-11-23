@@ -39,7 +39,7 @@ class SiswaController extends Controller
                     return $button;
                 })
                 ->addColumn('cek', function ($query) {
-                    $cek = "<input type='checkbox' class='ceks' id='" . $query->id . "'>";
+                    $cek = "<input type='checkbox' name='checkbox' id='" . $query->id . "'><label></label>";
                     return $cek;
                 })
                 ->rawColumns(['options', 'cek'])
@@ -123,7 +123,9 @@ class SiswaController extends Controller
     {
         $id = $request->id;
         $data = Siswa::find($id);
-        return response()->json(['data' => $data]);
+        return response()->json([
+            'data' => $data
+        ]);
     }
 
     /**
