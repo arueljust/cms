@@ -56,7 +56,6 @@ Route::prefix('admin')->middleware('auth', 'admin')->group(function () {
 
     // siswa
     Route::get('siswa', [SiswaController::class, 'index'])->name('index');
-    Route::get('siswa/show/{id}', [SiswaController::class, 'show']);
     Route::post('siswa/store', [SiswaController::class, 'store']);
     Route::post('siswa/edit', [SiswaController::class, 'edit']);
     Route::post('siswa/update', [SiswaController::class, 'update']);
@@ -65,20 +64,17 @@ Route::prefix('admin')->middleware('auth', 'admin')->group(function () {
 
     // guru
     Route::get('guru', [GuruController::class, 'index'])->name('indexGuru');
-    Route::get('guru/show/{id}', [GuruController::class, 'show']);
     Route::post('guru/store', [GuruController::class, 'store']);
     Route::post('guru/edit', [GuruController::class, 'edit']);
     Route::post('guru/update', [GuruController::class, 'update']);
     Route::post('guru/delete', [GuruController::class, 'destroy']);
 
     // jadwal
-    Route::get('jadwal', [JadwalController::class, 'index']);
-    Route::get('jadwal/show/{id}', [JadwalController::class, 'show']);
-    Route::get('jadwal/create', [JadwalController::class, 'create']);
-    Route::post('jadwal', [JadwalController::class, 'store']);
-    Route::get('jadwal/edit/{kelas_id}', [JadwalController::class, 'edit']);
-    Route::put('jadwal/{id}', [JadwalController::class, 'update']);
-    Route::get('jadwal/delete/{id}', [JadwalController::class, 'destroy']);
+    Route::get('jadwal', [JadwalController::class, 'index'])->name('indexJadwal');
+    Route::post('jadwal/store', [JadwalController::class, 'store']);
+    Route::post('jadwal/edit', [JadwalController::class, 'edit']);
+    Route::post('jadwal/update', [JadwalController::class, 'update']);
+    Route::post('jadwal/delete', [JadwalController::class, 'destroy']);
 
     // Info / Pengumuman
     Route::get('info', [InfoController::class, 'index']);

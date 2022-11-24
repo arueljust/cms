@@ -9,6 +9,7 @@ use App\Models\Siswa;
 use App\Models\Jadwal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Yajra\DataTables\Facades\DataTables;
 
 class JadwalController extends Controller
 {
@@ -17,28 +18,44 @@ class JadwalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
 
-        $dataJadwal = Jadwal::all();
-
-
-        return view('admin.jadwal.index', compact('dataJadwal'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $dataJadwal = Jadwal::all();
-        $dataGuru = Guru::all();
         $dataKelas = Kelas::all();
+        $dataGuru = Guru::all();
+        if ($request->ajax()) {
+            $query = Jadwal::with('kelas', 'guru')->orderBy('id', 'desc'); // function "with('kelas','guru')" ini jika ada table yang berelasi 'kelas' ini adalah nama function di model
 
+            return DataTables::of($query)
+                ->addIndexColumn()
+                ->editColumn('kelas.kelas', function ($data) {
+                    return $data->kelas->kelas;
+                })->editColumn('guru.nama', function ($data) {
+                    return $data->guru->nama;
+                })
+                ->addColumn('options', function ($query) {
+                    $button = '<button type="button"  id=' . $query->id . ' class="edit btn btn-outline-primary btn-sm"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                  </svg></button>';
+                    $button .= '   <button type="button" id=' . $query->id . ' class="delete btn btn-outline-danger btn-sm"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                  </svg></button>';
+                    return $button;
+                })
+                ->addColumn('cek', function ($query) {
+                    $cek = "<input type='checkbox' name='checkbox' id='" . $query->id . "'><label></label>";
+                    return $cek;
+                })->addColumn('absensi', function ($query) {
+                    $absensi = '<a href=""></a>';
+                    return $absensi;
+                })
+                ->rawColumns(['options', 'cek', 'absensi'])
+                ->make(true);
+        }
 
-        return view('admin.jadwal.create', compact('dataJadwal', 'dataGuru', 'dataKelas'));
+        return view('admin.jadwal.index', compact('dataKelas', 'dataGuru'));
     }
 
     /**
@@ -49,52 +66,48 @@ class JadwalController extends Controller
      */
     public function store(Request $request)
     {
-        $data = ([
-            'tanggal' => $request['tanggal'],
-            'materi' => $request['materi'],
-            'gurus_id' => $request['gurus_id'],
-            'kelas_id' => $request['siswas_id'],
-            'waktu' => $request['waktu'],
-        ]);
-        // cara menyimpan data yang lebih dr satu / multiple data (array) dalam satu colom db
-        $i = 0;
-        foreach ($request['gurus_id'] as $guruId) {
-            $data = ([
-                'tanggal' => $request['tanggal'],
-                'materi' => $request['materi'][$i],
-                'gurus_id' => $guruId,
-                'kelas_id' => $request['kelas_id'],
-                'waktu' => $request['waktu'][$i],
+        // $data = ([
+        //     'tanggal' => $request['tanggal'],
+        //     'materi' => $request['materi'],
+        //     'gurus_id' => $request['gurus_id'],
+        //     'kelas_id' => $request['kelas_id'],
+        //     'waktu' => $request['waktu'],
+        // ]);
+        // // cara menyimpan data yang lebih dr satu / multiple data (array) dalam satu colom db
+        // $i = 0;
+        // foreach ($request['gurus_id'] as $guruId) {
+        //     $data = ([
+        //         'tanggal' => $request['tanggal'],
+        //         'materi' => $request['materi'][$i],
+        //         'gurus_id' => $guruId,
+        //         'kelas_id' => $request['kelas_id'],
+        //         'waktu' => $request['waktu'][$i],
+        //     ]);
+        //     $i++;
+        //     $save = Jadwal::create($data);
+        // }
+        $data = Jadwal::create($request->validate([
+            'tanggal'=>'required',
+            'materi'=>'required',
+            'gurus_id'=>'required',
+            'kelas_id'=>'required',
+            'waktu'=>'required',
+        ]));
+        if ($data) {
+            return response()->json([
+                'status' => 200,
+                'data' => $data,
+                'text' => 'data ditambahkan'
             ]);
-            $i++;
-            Jadwal::create($data);
+        } else {
+            return response()->json([
+                'status' => 400,
+                'data' => $data,
+                'text' => $data->errors()->all()
+            ]);
         }
-
-
-        return redirect('admin/jadwal')->with('message', 'Jadwal baru disimpan');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Request $request)
-    {
-        // $dataJadwal=Jadwal::where('id',$id)->first();
-        $todayDate = Carbon::now()->format('Y-m-d');
-        $dataSiswa = Siswa::when(
-            // $request->date != null,
-            // function ($q) use ($request) {
-            //     return $q->whereDate('created_at', $request->date);
-            // }
-        )->when($request->kelas_id != null, function ($q) use ($request) {
-            return $q->where('kelas_id', $request->kelas_id);
-        })->paginate(10);
-
-        return view('admin.jadwal.show', compact('dataSiswa'));
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -102,13 +115,13 @@ class JadwalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        $dataJadwal = Jadwal::findOrFail($id);
-        $dataGuru = Guru::all();
-        $dataKelas = Kelas::all();
-
-        return view('admin.jadwal.edit', compact('dataJadwal', 'dataGuru', 'dataKelas'));
+        $id = $request->id;
+        $data = Jadwal::find($id);
+        return response()->json([
+            'data' => $data
+        ]);
     }
 
     /**
@@ -118,25 +131,47 @@ class JadwalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
+        // try {
+        //     $data = ([
+        //         'tanggal' => $request['tanggal'],
+        //         'materi' => $request['materi'],
+        //         'gurus_id' => $request['gurus_id'],
+        //         'kelas_id' => $request['kelas_id'],
+        //         'waktu' => $request['waktu'],
+        //     ]);
 
-        try {
-            $data = ([
-                'tanggal' => $request['tanggal'],
-                'materi' => $request['materi'],
-                'gurus_id' => $request['gurus_id'],
-                'kelas_id' => $request['kelas_id'],
-                'waktu' => $request['waktu'],
+        //     Jadwal::where('id', $id)->update($data);
+
+        //     return redirect('admin/jadwal')->with('message', 'Jadwal baru disimpan');
+        // } catch (Throwable $e) {
+        //     report($e);
+
+        //     return redirect('admin/jadwal')->with('message', 'Jadwal gagal diupdate');
+        // }
+        $id=$request->id;
+        $data = $request->validate([
+            'tanggal'=>'required',
+            'materi'=>'required',
+            'gurus_id'=>'required',
+            'kelas_id'=>'required',
+            'waktu'=>'required',
+        ]);
+        $datas=Jadwal::find($id);
+        $save=$datas->update($data);
+        if ($save) {
+            return response()->json([
+                'status' => 200,
+                'data' => $save,
+                'text' => 'data ditambahkan'
             ]);
-
-            Jadwal::where('id', $id)->update($data);
-
-            return redirect('admin/jadwal')->with('message', 'Jadwal baru disimpan');
-        } catch (Throwable $e) {
-            report($e);
-
-            return redirect('admin/jadwal')->with('message', 'Jadwal gagal diupdate');
+        } else {
+            return response()->json([
+                'status' => 400,
+                'data' => $save,
+                'text' => $save->errors()->all()
+            ]);
         }
     }
 
@@ -146,10 +181,23 @@ class JadwalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $data = Jadwal::findOrFail($id)->delete();
+        if ($request->multi != null) {
 
-        return redirect('admin/jadwal')->with('message', 'Data berhasil dihapus');
+            $data = $request->data;
+
+            foreach ($data as $key) {
+                $datas = Jadwal::find($key);
+                $datas->delete();
+            }
+            return response()->json(['text' => 'berhasil hapus data'], 200);
+        } else {
+
+            $id = $request->id;
+            $data = Jadwal::find($id);
+            $data->delete();
+            return response()->json(['text' => 'berhasil hapus data'], 200);
+        }
     }
 }
