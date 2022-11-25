@@ -21,7 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('kelas_id');
             $table->unsignedBigInteger('user_id');
             $table->text('deskripsi');
-            $table->tinyInteger('status')->default('0');
+            $table->string('status')->default('tidak aktif');
             $table->foreign('kelas_id')->references('id')->on('kelas')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

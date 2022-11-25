@@ -42,10 +42,10 @@ Route::prefix('admin')->middleware('auth', 'admin')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index']);
 
     // user
-    Route::get('user', [UserController::class, 'index']);
-    Route::get('user/{id}', [UserController::class, 'edit']);
-    Route::put('user/{id}', [UserController::class, 'update']);
-    Route::get('user/delete/{id}', [UserController::class, 'destroy']);
+    Route::get('user', [UserController::class, 'index'])->name('indexUser');
+    Route::post('user/edit', [UserController::class, 'edit']);
+    Route::post('user/update', [UserController::class, 'update']);
+    Route::post('user/delete', [UserController::class, 'destroy']);
 
     // kelas
     Route::get('kelas', [KelasController::class, 'index'])->name('indexKelas');
@@ -77,13 +77,11 @@ Route::prefix('admin')->middleware('auth', 'admin')->group(function () {
     Route::post('jadwal/delete', [JadwalController::class, 'destroy']);
 
     // Info / Pengumuman
-    Route::get('info', [InfoController::class, 'index']);
-    //  Route::get('guru/show/{id}',[GuruController::class,'show']);
-    Route::get('info/create', [InfoController::class, 'create']);
-    Route::post('info', [InfoController::class, 'store']);
-    Route::get('info/edit/{id}', [InfoController::class, 'edit']);
-    Route::put('info/{id}', [InfoController::class, 'update']);
-    Route::get('info/delete/{id}', [InfoController::class, 'destroy']);
+    Route::get('info', [InfoController::class, 'index'])->name('indexInfo');
+    Route::post('info/store', [InfoController::class, 'store']);
+    Route::post('info/edit', [InfoController::class, 'edit']);
+    Route::post('info/update', [InfoController::class, 'update']);
+    Route::post('info/delete', [InfoController::class, 'destroy']);
 
     // Info / Pengumuman
     Route::get('absensi', [AbsensiSiswaController::class, 'index']);

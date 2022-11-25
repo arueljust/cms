@@ -12,7 +12,7 @@
                         </h4>
                     </div>
                     @foreach($data as $d)
-                    @if($d->status==1)
+                    @if($d->status == 'aktif')
                     <div class="card-body">
                         <div class="float-right">
                             <h6><strong>

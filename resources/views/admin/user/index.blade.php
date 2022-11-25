@@ -14,12 +14,20 @@
                     <div class="card shadow">
                         <div class="card card-outline card-primary">
                             <div class="card-header">
-                            <h4><strong>Data</strong> <strong class="text-warning">User</strong></h4>
+                                <h4><strong>Data</strong> <strong class="text-warning">User</strong>
+                                    <button type="button" id="addUser" class="btn btn-sm btn-outline-primary float-right d-none" data-bs-toggle="modal" data-bs-target="#staticBackdropUser">
+                                        <strong>Tambah Data</strong>
+                                    </button>
+                                    <button type="button" id="deleteUser" class="btn btn-sm btn-outline-danger float-end mr-1 d-none">
+                                        <strong>Hapus Data</strong>
+                                    </button>
+                                </h4>
                             </div>
                             <div class="card-body">
-                                <table class="table table-bordered table-striped shadow" id="example1">
+                                <table class="table table-bordered table-striped shadow" id="user-table">
                                     <thead>
                                         <tr>
+                                            <th><input type="checkbox" name="main_checkbox"><label></label></th>
                                             <th>ID</th>
                                             <th>Nama</th>
                                             <th>Email</th>
@@ -29,53 +37,58 @@
                                             <th>Options</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        @foreach ($data as $i)
-                                        <tr>
-                                            <td>{{$i->id}}</td>
-                                            <td>{{$i->name}}</td>
-                                            <td>{{$i->email}}</td>
-                                            <td>{{Carbon\Carbon::parse($i->created_at)->isoFormat('dddd, D MMMM Y H:m:d') }}</td>
-                                            <td>
-                                                @if($i->role==1)
-                                                <span class="badge badge-primary">
-                                                    {{($i->role==1) ? 'Admin':''}}
-                                                </span>
-                                                @else
-                                                <span class="badge badge-secondary">
-                                                    {{($i->role==1) ? '':'User'}}
-                                                </span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if($i->status==1)
-                                                <span class="badge badge-success">
-                                                    {{($i->status==1) ? 'Online':''}}
-                                                </span>
-                                                @else
-                                                <span class="badge badge-secondary">
-                                                    {{($i->status==1) ? '':'Offline'}}
-                                                </span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <a href="{{url ('admin/user/'.$i->id)}}" class="btn btn-sm btn-primary shadow">Edit</a>
-                                                |
-                                                <a href="{{url ('admin/user/delete/'.$i->id)}}" class="btn btn-sm btn-danger shadow" onclick="return confirm('Yakin Hapus Data?')">Hapus</a>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
+            </div>
+        </div>
     </div>
-    <!-- /.content-header -->
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="staticBackdropUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabelUser"><strong class="text-dark">Tambah Data</strong> <strong class="text-warning">User</strong></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST">
+                    @csrf
+                    <div>
+                        <label>Nama :</label>
+                        <div class="col-md-12">
+                            <input id="nama" type="text" class="form-control" name="name" required autocomplete="name" autofocus>
+                            <input type="hidden" id="id" name="id">
+                        </div>
+                    </div>
+                    <div>
+                        <label>Email :</label>
+                        <div class="col-md-12">
+                            <input id="email" type="text" class="form-control" name="email" required autocomplete="email" autofocus>
+                        </div>
+                    </div>
+                    <div>
+                        <label>Role :</label>
+                        <div class="col-md-12">
+                            <input id="role" type="text" class="form-control" name="role" required autocomplete="role" autofocus>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="close" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="button" id="save" class="btn btn-sm btn-primary">Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<input type="hidden" id="table-url" value="{{ route('indexUser') }}">
 @endsection
+@push('script')
+<script src="{{ asset('js/user/main.js') }}"></script>
+@endpush
