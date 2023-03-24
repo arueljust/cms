@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AbsensiSiswaController;
+use App\Http\Controllers\AbsensiUdController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Frontend\AbsensiController;
@@ -83,13 +84,7 @@ Route::prefix('admin')->middleware('auth', 'admin')->group(function () {
     Route::post('info/update', [InfoController::class, 'update']);
     Route::post('info/delete', [InfoController::class, 'destroy']);
 
-    // Info / Pengumuman
-    Route::get('absensi', [AbsensiSiswaController::class, 'index']);
-    //  Route::get('guru/show/{id}',[GuruController::class,'show']);
-    Route::get('absensi/create', [AbsensiSiswaController::class, 'create']);
-    //  Route::post('info',[InfoController::class,'store']);
-    //  Route::get('info/edit/{id}',[InfoController::class,'edit']);
-    //  Route::put('info/{id}',[InfoController::class,'update']);
-    //  Route::get('info/delete/{id}',[InfoController::class,'destroy']);
+    // absensi Usia Dini
+    Route::get('usia-dini',[AbsensiUdController::class,'index']);
 
 });

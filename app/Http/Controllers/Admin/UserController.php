@@ -30,10 +30,27 @@ class UserController extends Controller
                     }
                 })
                 ->addColumn('cek', function ($query) {
-                    if($query->status!==1){
-                    $cek = "<input type='checkbox' name='checkbox' id='" . $query->id . "'><label></label>";
-                    return $cek;
-                }
+                    if ($query->status !== 1) {
+                        $cek = "<input type='checkbox' name='checkbox' id='" . $query->id . "'><label></label>";
+                        return $cek;
+                    }
+                })
+                ->editColumn('created_at', function (User $user) {
+                    return \Carbon\Carbon::parse($user->created_at)->isoFormat('DD-MM-YYYY');
+                })
+                ->editColumn('role', function ($data) {
+                    if ($data->role == 1) {
+                        return "Admin";
+                    } else {
+                        return "User";
+                    }
+                })
+                ->editColumn('status', function ($data) {
+                    if ($data->status == 0) {
+                        return "Offline";
+                    } else {
+                        return "Online";
+                    }
                 })
                 ->rawColumns(['options', 'cek'])
                 ->make(true);

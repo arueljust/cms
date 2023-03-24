@@ -47,11 +47,8 @@ class JadwalController extends Controller
                 ->addColumn('cek', function ($query) {
                     $cek = "<input type='checkbox' name='checkbox' id='" . $query->id . "'><label></label>";
                     return $cek;
-                })->addColumn('absensi', function ($query) {
-                    $absensi = '<a href=""></a>';
-                    return $absensi;
                 })
-                ->rawColumns(['options', 'cek', 'absensi'])
+                ->rawColumns(['options', 'cek'])
                 ->make(true);
         }
 

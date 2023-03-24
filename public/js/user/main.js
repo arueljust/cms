@@ -27,7 +27,10 @@ $(document).ready(function () {
                 },
                 { data: "name", name: "name" },
                 { data: "email", name: "email" },
-                { data: "created_at", name: "created_at" },
+                {
+                    data: "created_at",
+                    name: "created_at",
+                },
                 { data: "role", name: "role" },
                 { data: "status", name: "status" },
                 {
@@ -79,34 +82,33 @@ $(document).on("click", ".edit", function () {
     $("#staticBackdropLabelUser").html(
         '<h5 class="modal-title" id="staticBackdropLabel"><strong class="text-dark">Edit Data</strong> <strong class="text-warning">User</strong></h5>'
     );
-        // data
-        $.ajax({
-            url: "/admin/user/edit",
-            type: "post",
-            headers: {
-                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-            },
-            data: {
-                id: id,
-            },
-            success: function (res) {
-                $("#id").val(res.data.id);
-                $("#nama").val(res.data.name);
-                $("#email").val(res.data.email);
-                $("#role").val(res.data.role);
-            },
-            error: function (res) {
-                alert(res.responseJSON.msg);
-            },
-        });
-        // ketika data tidak jadi di edit dan menekan tombol batal maka akan menjalankan function ini
-        $("#close").on("click", function () {
-            $("#save").text("Simpan");
-            $("#name").val(null);
-            $("#email").val(null);
-            $("#role").val(null);
-        });
-
+    // data
+    $.ajax({
+        url: "/admin/user/edit",
+        type: "post",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        data: {
+            id: id,
+        },
+        success: function (res) {
+            $("#id").val(res.data.id);
+            $("#nama").val(res.data.name);
+            $("#email").val(res.data.email);
+            $("#role").val(res.data.role);
+        },
+        error: function (res) {
+            alert(res.responseJSON.msg);
+        },
+    });
+    // ketika data tidak jadi di edit dan menekan tombol batal maka akan menjalankan function ini
+    $("#close").on("click", function () {
+        $("#save").text("Simpan");
+        $("#name").val(null);
+        $("#email").val(null);
+        $("#role").val(null);
+    });
 });
 
 // // function tambah data

@@ -1,5 +1,5 @@
 @extends('admin.panel')
-@section('title','Jadwal')
+@section('title','Usia-Dini')
 @section('content')
 
 <div class="content-wrapper">
@@ -14,26 +14,25 @@
                     <div class="card shadow">
                         <div class="card card-outline card-primary">
                             <div class="card-header">
-                                <h4><strong>Jadwal</strong> <strong class="text-warning">Pengajian</strong>
-                                    <button type="button" id="addJadwal" class="btn btn-sm btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#staticBackdropJadwal">
+                                <h4><strong>Info</strong> / <strong class="text-warning">Absensi Usia-Dini</strong>
+                                    <button type="button" id="addInfo" class="btn btn-sm btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#staticBackdropInfo">
                                         <strong>Tambah Data</strong>
                                     </button>
-                                    <button type="button" id="deleteJadwal" class="btn btn-sm btn-outline-danger float-end mr-1 d-none">
+                                    <button type="button" id="deleteInfo" class="btn btn-sm btn-outline-danger float-end mr-1 d-none">
                                         <strong>Hapus Data</strong>
                                     </button>
                                 </h4>
                             </div>
                             <div class="card-body">
-                                <table class="table table-bordered table-striped shadow" id="jadwal-table">
+                                <table class="table table-bordered table-striped shadow" id="info-table">
                                     <thead>
                                         <tr>
                                             <th><input type="checkbox" name="main_checkbox"><label></label></th>
                                             <th>No</th>
                                             <th>Tanggal</th>
-                                            <th>Materi</th>
-                                            <th>Nama Guru</th>
-                                            <th>Kelas/Usia</th>
-                                            <th>Waktu</th>
+                                            <th>Kelas</th>
+                                            <th>Nama</th>
+                                            <th>Status</th>
                                             <th>Options</th>
                                         </tr>
                                     </thead>
@@ -47,13 +46,12 @@
     </div>
 </div>
 
-
 <!-- Modal -->
-<div class="modal fade" id="staticBackdropJadwal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="staticBackdropInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabelJadwal"><strong class="text-dark">Tambah Data</strong> <strong class="text-warning">Jadwal</strong></h5>
+                <h5 class="modal-title" id="staticBackdropLabelInfo"><strong class="text-dark">Tambah</strong> <strong class="text-warning">Pengumuman / Info</strong></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -64,23 +62,15 @@
                             <label>Hari / Tanggal :</label>
                             <input type="date" id="tanggal" name="tanggal" class="form-control shadow" required />
                             <input type="hidden" id="id" name="id">
+                            <input type="hidden" id="user_id" name="user_id">
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label>Materi :</label>
-                            <input type="text" id="materi" name="materi" class="form-control shadow" placeholder="Masukkan materi" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label>Nama Guru  :</label>
-                            <select class="form-control shadow" id="gurus_id" name="gurus_id" required>
-                                <option value="">-- Pilih Guru Pengajar --</option>
-                                @foreach($dataGuru as $d)
-                                <option value="{{$d->id}}">{{$d->nama}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label>Waktu  :</label>
+                            <label>Waktu :</label>
                             <input type="text" id="waktu" name="waktu" class="form-control shadow" placeholder="Masukkan waktu" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label>Judul :</label>
+                            <input type="text" id="judul" name="judul" class="form-control shadow" placeholder="Masukkan judul" required>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label>Usia/Kelas :</label>
@@ -89,6 +79,18 @@
                                 @foreach($dataKelas as $d)
                                 <option value="{{ $d->id }}">{{$d->kelas}}</option>
                                 @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label>Deskripsi :</label>
+                            <textarea name="deskripsi" id="deskripsi" rows="2" class="form-control shadow" required></textarea>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label class="mr-1">Status : </label>
+                            <select name="status" id="status" class="form-control shadow status">
+                                <option value="">-- Pilih Status --</option>
+                                <option value="aktif"> Aktif </option>
+                                <option value="non-aktif"> Non-Aktif </option>
                             </select>
                         </div>
                     </div>
@@ -103,9 +105,8 @@
     </div>
 </div>
 
-
-<input type="hidden" id="table-url" value="{{ route('indexJadwal') }}">
+<input type="hidden" id="table-url" value="{{ route('indexInfo') }}">
 @endsection
 @push('script')
-<script src="{{ asset('js/jadwal/main.js') }}"></script>
+<script src="{{ asset('js/info/main.js') }}"></script>
 @endpush

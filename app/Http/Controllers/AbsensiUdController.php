@@ -2,23 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Jadwal;
-use App\Models\Siswa;
 use Illuminate\Http\Request;
 
-class AbsensiSiswaController extends Controller
+class AbsensiUdController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-
-        $dataSiswa=Siswa::all();
-        $dataJadwal=Jadwal::all();
-        return view('admin.absensi.index',compact('dataSiswa','dataJadwal'));
+        return view('admin.absensi.usia_dini.index');
     }
 
     /**
@@ -28,7 +23,7 @@ class AbsensiSiswaController extends Controller
      */
     public function create()
     {
-        return view('admin.absensi.create');
+        //
     }
 
     /**

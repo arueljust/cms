@@ -31,12 +31,6 @@ $(document).ready(function () {
                 { data: "kelas.kelas", name: "kelas.kelas" },
                 { data: "waktu", name: "waktu" },
                 {
-                    data: "absensi",
-                    name: "absensi",
-                    orderable: false,
-                    searchable: false,
-                },
-                {
                     data: "options",
                     name: "options",
                     orderable: false,
